@@ -1,30 +1,58 @@
-import React, { useEffect } from 'react'
-import { Card, Form, Button, Col, Row } from 'react-bootstrap'
+import React from 'react'
+import { Card, Form, Button, Alert } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { getPokeInfo } from '../../actions'
+import PokemonList from '../pokemonList'
 
+import './search.css'
 
 const PokemonSearch = (props) => {
 
     const pokeName = React.createRef()
 
-    useEffect(() => {
-        const name = pokeName.current.value
-        props.getPokeInfo(name.toLowerCase())
-    }, []);
-
     const handlerTextBox = () => {
-        const pokemonName = pokeName.current.value        
-        const textBox = {
-            name: pokemonName.toLowerCase()
+        const pokemonName = pokeName.current.value
+            
+        if (pokemonName == '' || pokemonName == null) {
+            alert('Please put the name of the pokemon')
+        } else {
+            const textBox = {
+                name: pokemonName.toLowerCase()
+            }
+            props.getPokeInfo(textBox.name)
+            showResults('none')
+            showSpinner('block');
+    
+            setTimeout(() => {
+                showResults('block')
+                showSpinner('none');
+            }, 3000);
         }
-        props.getPokeInfo(textBox.name)
+
+        clean()
+        
+    }
+
+    // Mostrar ocultar contenido
+    const showSpinner = (display) =>{
+        const spinner = document.querySelector('.contenido-spinner')
+        spinner.style.display = display
+    }
+
+    const showResults = (display) =>{
+        const table = document.querySelector('.resultado')
+        table.style.display = display
+    }
+
+    // CleanForm
+    const clean = () => {
+        pokeName.current.value = ''
     }
 
     return(
         <div>
-            <Card className='cards animated fadeIn' border="info">
-                <Card.Header className='card-header'>Gotta Catche em all!!!</Card.Header>
+            <Card className='cards animated fadeIn margin-20' border="info">
+                <Card.Header className='card-header'>Gotta Catch em all!!!</Card.Header>
                 <Card.Body>
                     <Form>
                         <Form.Group >
@@ -39,25 +67,21 @@ const PokemonSearch = (props) => {
                 </Card.Body>
             </Card>
 
-            <Card>
-                {/* {
-                    pokeInfo.map((pokemon) => {
-                        return <Row>
-                                    <Col>{ pokemon.name }</Col>
-                                    <Col>{ pokemon.abilities }</Col>
-                                </Row>
-                    })
-                } */}
+             {/* Spiner */}
+             <div className="spinner contenido-spinner">
+                <div className="bounce1"></div>
+                <div className="bounce2"></div>
+                <div className="bounce3"></div>
+            </div>
+
+            <Card className='cards animated fadeIn margin-20 resultado'>
+            <Card.Header className='card-header-1'>Showing Pokemon Info</Card.Header>
+                <Card.Body>
+                    <PokemonList/>
+                </Card.Body>
             </Card>
         </div>
     )
 }
 
-const mapStateToProps = (state) => {
-    console.log('Estado:',state);
-    return {
-        pokeInfo: state.pokeInfo
-    }
-}
-
-export default connect(mapStateToProps, {getPokeInfo})(PokemonSearch)
+export default connect(null, { getPokeInfo })(PokemonSearch)

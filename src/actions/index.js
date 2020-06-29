@@ -11,3 +11,15 @@ export const getPokeInfo = (name) => {
         })
     }
 }
+
+// Form Actions
+export const newMember = (info) => {
+    return {
+        type: 'NEW_MEMBER',
+        payload: {
+            name: info.name,
+            userName: info.userName,
+            email: info.email
+        }
+    }
+}

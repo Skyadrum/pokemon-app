@@ -1,39 +1,46 @@
-import React, { useEffect } from 'react'
-import { Card, Col, Row } from 'react-bootstrap'
+import React from 'react'
+import { Container, Table} from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { getPokeInfo } from '../../actions'
 
+ 
 
 const PokemonList = (props) => {
-
-    const pokeName = React.createRef()
-
-    useEffect(() => {
-        const name = pokeName.current.value
-        props.getPokeInfo(name.toLowerCase())
-    }, []);
+    console.log('PROPS', props);
 
     return(
-        <div>
-            <Card className='cards animated fadeIn' border="info">
-                {/* {
-                    pokeInfo.map((pokemon) => {
-                        return <Row>
-                                    <Col>{ pokemon.name }</Col>
-                                    <Col>{ pokemon.abilities }</Col>
-                                </Row>
-                    })
-                } */}
-            </Card>
-        </div>
+        <Container>
+            
+            <Table striped bordered hover size="sm">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Pokemon Name</th>
+                        <th>Base Experience</th>
+                        <th>Weight</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        props.pokeInfo.map((pokemon) => {
+                            return <tr key={ pokemon.data.id }>
+                                        <td>{ pokemon.data.id }</td>
+                                        <td>{ pokemon.data.name }</td>
+                                        <td>{ pokemon.data.base_experience }</td>
+                                        <td>{ pokemon.data.weight }</td>
+                                    </tr>
+                        })                        
+                    }
+                </tbody>
+            </Table>
+        </Container>
     )
 }
 
 const mapStateToProps = (state) => {
-    console.log('Estado:',state);
+    console.log('Pokemon INFO:',state);
     return {
-        pokeInfo: state.pokeInfo
+        pokeInfo: state.pokemonInfo,
     }
 }
 
-export default connect(mapStateToProps, {getPokeInfo})(PokemonSearch)
+export default connect(mapStateToProps)(PokemonList)
