@@ -1,10 +1,11 @@
 import React from 'react'
-import { Card, Form, Button, Alert } from 'react-bootstrap'
+import { Card, Form, Button } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { getPokeInfo } from '../../actions'
 import PokemonList from '../pokemonList'
 
 import './search.css'
+import '../animate.css'
 
 const PokemonSearch = (props) => {
 

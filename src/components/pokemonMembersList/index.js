@@ -2,11 +2,13 @@ import React from 'react'
 import { Container, Table } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
+import '../animate.css'
+
 const MemberList = (props) => {
     
     
     return(
-        <Container>
+        <Container className='animated fade-in fast'>
             <Table striped bordered hover size="sm">
                 <thead>
                     <tr>
